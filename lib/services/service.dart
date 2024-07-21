@@ -43,7 +43,7 @@ class Service {
   }
 
   Future<Map<String, dynamic>> dataAir2() async {
-    final url = '$baseUrl/data/latest_air1';
+    final url = '$baseUrl/data/latest_air2';
     final response = await http.get(
       Uri.parse(url),
       headers: <String, String>{
@@ -59,7 +59,7 @@ class Service {
   }
 
   Future<Map<String, dynamic>> dataWater() async {
-    final url = '$baseUrl/data/latest_air1';
+    final url = '$baseUrl/data/latest_water';
     final response = await http.get(
       Uri.parse(url),
       headers: <String, String>{
@@ -91,7 +91,7 @@ class Service {
   }
 
   Future<List<Map<String, dynamic>>> simulationAir2() async {
-    final url = '$baseUrl/data/latest_air1/average';
+    final url = '$baseUrl/data/latest_air2/average';
     final response = await http.get(
       Uri.parse(url),
       headers: <String, String>{
@@ -107,7 +107,7 @@ class Service {
   }
 
   Future<List<Map<String, dynamic>>> simulationWater() async {
-    final url = '$baseUrl/data/latest_air1/average';
+    final url = '$baseUrl/data/latest_water/average';
     final response = await http.get(
       Uri.parse(url),
       headers: <String, String>{

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:pis_movil/services/service.dart';
 import 'package:pis_movil/widgets/simulation_air1.dart';
+import 'package:pis_movil/widgets/simulation_air2.dart';
+import 'package:pis_movil/widgets/simulation_water.dart';
+import 'dart:io'; // For SocketException
 
 class DashboardScreen extends StatelessWidget {
   DashboardScreen({super.key});
@@ -13,6 +16,11 @@ class DashboardScreen extends StatelessWidget {
   Future<Map<String, dynamic>> fetchDataAir2() {
     // Asegúrate de tener una función similar en tu clase Service para obtener datos del otro sensor
     return service.dataAir2();
+  }
+
+  Future<Map<String, dynamic>> fetchDataWater() {
+    // Asegúrate de tener una función similar en tu clase Service para obtener datos del otro sensor
+    return service.dataWater();
   }
 
   @override
@@ -47,7 +55,14 @@ class DashboardScreen extends StatelessWidget {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
                       } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
+                        // Check for network-related errors
+                        String errorMessage =
+                            'El servidor no esta activado, por favor espere un momento';
+                        if (snapshot.error is SocketException) {
+                          errorMessage =
+                              'El servidor no esta activado, por favor espere un momento.';
+                        }
+                        return Text(errorMessage);
                       } else if (snapshot.hasData) {
                         final data = snapshot.data!;
                         return GestureDetector(
@@ -64,7 +79,7 @@ class DashboardScreen extends StatelessWidget {
                           },
                           child: Container(
                             constraints: BoxConstraints(
-                                maxHeight: 270), // Máximo alto del Container
+                                maxHeight: 300), // Máximo alto del Container
                             child: Card(
                               color: Color.fromARGB(255, 44, 62, 94),
                               margin: EdgeInsets.only(left: 8.0),
@@ -139,12 +154,19 @@ class DashboardScreen extends StatelessWidget {
                 SizedBox(width: 8.0), // Espacio entre los cards
                 Flexible(
                   child: FutureBuilder<Map<String, dynamic>>(
-                    future: fetchDataAir1(),
+                    future: fetchDataAir2(),
                     builder: (context, snapshot) {
                       if (snapshot.connectionState == ConnectionState.waiting) {
                         return CircularProgressIndicator();
                       } else if (snapshot.hasError) {
-                        return Text('Error: ${snapshot.error}');
+                        // Check for network-related errors
+                        String errorMessage =
+                            'El servidor no esta activado, por favor espere un momento';
+                        if (snapshot.error is SocketException) {
+                          errorMessage =
+                              'El servidor no esta activado, por favor espere un momento.';
+                        }
+                        return Text(errorMessage);
                       } else if (snapshot.hasData) {
                         final data = snapshot.data!;
                         return GestureDetector(
@@ -152,7 +174,7 @@ class DashboardScreen extends StatelessWidget {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (context) => SimulationScreen(
+                                builder: (context) => SimulationScreenAir2(
                                   service: service,
                                   title: 'Pronóstico',
                                 ),
@@ -161,7 +183,7 @@ class DashboardScreen extends StatelessWidget {
                           },
                           child: Container(
                             constraints: BoxConstraints(
-                                maxHeight: 270), // Máximo alto del Container
+                                maxHeight: 300), // Máximo alto del Container
                             child: Card(
                               color: Color.fromARGB(255, 44, 62, 94),
                               margin: EdgeInsets.only(left: 8.0),
@@ -238,12 +260,19 @@ class DashboardScreen extends StatelessWidget {
             SizedBox(height: 16.0),
             Flexible(
               child: FutureBuilder<Map<String, dynamic>>(
-                future: fetchDataAir1(),
+                future: fetchDataWater(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
                     return CircularProgressIndicator();
                   } else if (snapshot.hasError) {
-                    return Text('Error: ${snapshot.error}');
+                    // Check for network-related errors
+                    String errorMessage =
+                        'El servidor no esta activado, por favor espere un momento';
+                    if (snapshot.error is SocketException) {
+                      errorMessage =
+                          'El servidor no esta activado, por favor espere un momento.';
+                    }
+                    return Text(errorMessage);
                   } else if (snapshot.hasData) {
                     final data = snapshot.data!;
                     return GestureDetector(
@@ -251,7 +280,7 @@ class DashboardScreen extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) => SimulationScreen(
+                            builder: (context) => SimulationScreenWater(
                               service: service,
                               title: 'Pronóstico',
                             ),
@@ -260,7 +289,7 @@ class DashboardScreen extends StatelessWidget {
                       },
                       child: Container(
                         constraints: BoxConstraints(
-                          maxHeight: 250,
+                          maxHeight: 270,
                         ),
                         child: Card(
                           color: Color.fromARGB(255, 44, 62, 94),
