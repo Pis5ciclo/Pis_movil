@@ -55,15 +55,6 @@ class SimulationScreenAir2 extends StatelessWidget {
               return Center(child: Text('No data found'));
             }
 
-            // Calcula el promedio global
-            final averageGlobal = data.fold<double>(0.0, (sum, point) {
-                  final avgValueStr = point['avg_value'];
-                  final avgValue =
-                      double.tryParse(avgValueStr?.toString() ?? '') ?? 0.0;
-                  return sum + avgValue;
-                }) /
-                data.length;
-
             // Calcula minY y maxY manejando valores nulos
             final minY = data
                 .map((point) =>
